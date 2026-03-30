@@ -1,5 +1,5 @@
 import { Construct } from "constructs";
-import { TerraformStack, TerraformOutput } from "cdktf";
+import { TerraformStack, TerraformOutput, S3Backend } from "cdktf";
 import { AwsProvider } from "./.gen/providers/aws/provider";
 import { EcrRepository } from "./.gen/providers/aws/ecr-repository";
 import { EcsCluster } from "./.gen/providers/aws/ecs-cluster";
@@ -16,6 +16,7 @@ import { IamRolePolicyAttachment } from "./.gen/providers/aws/iam-role-policy-at
 import { Lb } from "./.gen/providers/aws/lb";
 import { LbTargetGroup } from "./.gen/providers/aws/lb-target-group";
 import { LbListener } from "./.gen/providers/aws/lb-listener";
+import { S3Backend } from "cdktf";
 
 interface TurboVetsStackProps {
   region: string;
@@ -27,6 +28,16 @@ interface TurboVetsStackProps {
 export class TurboVetsStack extends TerraformStack {
   constructor(scope: Construct, id: string, props: TurboVetsStackProps) {
     super(scope, id);
+
+    
+    // Remote backend - S3
+    new S3Backend(this, {
+      bucket: "tv-devops-tfstate-522814733393",
+      key: "tv-devops/terraform.tfstate",
+      region: "us-east-1",
+      dynamodbTable: "tv-devops-tfstate-lock",
+      encrypt: true,
+});
 
     const { region, accountId, appName, containerPort } = props;
 
