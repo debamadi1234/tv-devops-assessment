@@ -73,11 +73,22 @@ jobs:
       - name: Deploy CDKTF stack
         working-directory: ./iac/cdktf.out/stacks/tv-devops
         run: |
-          terraform init \
-            -backend-config="bucket=tv-devops-tfstate-522814733393" \
-            -backend-config="key=tv-devops/terraform.tfstate" \
-            -backend-config="region=us-east-1" \
-            -backend-config="dynamodb_table=tv-devops-tfstate-lock"
+          cat > backend_override.tf.json << 'EOF'
+          {
+            "terraform": {
+              "backend": {
+                "s3": {
+                  "bucket": "tv-devops-tfstate-522814733393",
+                  "key": "tv-devops/terraform.tfstate",
+                  "region": "us-east-1",
+                  "dynamodb_table": "tv-devops-tfstate-lock",
+                  "encrypt": true
+                }
+              }
+            }
+          }
+          EOF
+          terraform init -reconfigure
           terraform apply -auto-approve
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
