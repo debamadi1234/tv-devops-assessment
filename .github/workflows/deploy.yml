@@ -54,6 +54,14 @@ jobs:
           terraform_version: 1.5.0
           terraform_wrapper: false
 
+      - name: Generate CDKTF providers
+        working-directory: ./iac
+        run: cdktf get
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          APP_NAME: ${{ secrets.APP_NAME }}
+
       - name: Synthesize CDKTF stack
         working-directory: ./iac
         run: cdktf synth
