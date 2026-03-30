@@ -16,7 +16,6 @@ import { IamRolePolicyAttachment } from "./.gen/providers/aws/iam-role-policy-at
 import { Lb } from "./.gen/providers/aws/lb";
 import { LbTargetGroup } from "./.gen/providers/aws/lb-target-group";
 import { LbListener } from "./.gen/providers/aws/lb-listener";
-import { S3Backend } from "cdktf";
 
 interface TurboVetsStackProps {
   region: string;
