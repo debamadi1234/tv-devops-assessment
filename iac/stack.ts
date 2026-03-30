@@ -37,6 +37,7 @@ export class TurboVetsStack extends TerraformStack {
     const ecr = new EcrRepository(this, "ecr", {
       name: appName,
       forceDelete: true,
+      tags: { Name: appName },
     });
 
     // VPC
