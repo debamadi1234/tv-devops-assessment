@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "commonjs",
+    "lib": ["es2018"],
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "declaration": true,
+    "experimentalDecorators": true,
+    "types": ["node"]
+  },
+  "include": ["main.ts", "**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

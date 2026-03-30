@@ -1,0 +1,11 @@
+{
+  "language": "typescript",
+  "app": "npx ts-node main.ts",
+  "projectId": "tv-devops-iac",
+  "sendCrashReports": false,
+  "terraformProviders": [
+    "hashicorp/aws@~> 6.38"
+  ],
+  "terraformModules": [],
+  "context": {}
+}
