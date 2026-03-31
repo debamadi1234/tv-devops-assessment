@@ -27,15 +27,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Build and push Docker image
-        run: |
-          docker build -t $ECR_REPO:latest ./app
-          docker push $ECR_REPO:latest
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -70,7 +61,7 @@ jobs:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           APP_NAME: ${{ secrets.APP_NAME }}
 
-      - name: Deploy CDKTF stack
+      - name: Deploy infrastructure
         working-directory: ./iac/cdktf.out/stacks/tv-devops
         run: |
           cat > backend_override.tf.json << 'EOF'
@@ -94,3 +85,12 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           APP_NAME: ${{ secrets.APP_NAME }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t $ECR_REPO:latest ./app
+          docker push $ECR_REPO:latest
